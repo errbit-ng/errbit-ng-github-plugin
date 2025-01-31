@@ -1,7 +1,12 @@
-# Errbit Github Plugin [![TravisCI][travis-img-url]][travis-ci-url]
+# Errbit-NG GitHub Plugin
 
-[travis-img-url]: https://travis-ci.org/errbit/errbit_github_plugin.svg?branch=master
-[travis-ci-url]: http://travis-ci.org/errbit/errbit_github_plugin
+This plugin provides GitHub issue tracker integration for Errbit-NG, and it is the
+only one plugin included by default in Errbit-NG.
 
-This plugin provides GitHub issue tracker integration for Errbit and it is the
-only plugin included by default in Errbit.
+## Contributing
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/errbit-ng/errbit-ng-github-plugin.
+
+## License
+
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
