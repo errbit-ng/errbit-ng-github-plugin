@@ -10,7 +10,7 @@ module ErrbitGithubPlugin
   end
 
   def self.read_static_file(file)
-    File.read(File.join(self.root, "static", file))
+    File.read(File.join(root, "static", file))
   end
 end
 
