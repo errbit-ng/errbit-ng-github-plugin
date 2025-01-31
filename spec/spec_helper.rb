@@ -16,7 +16,6 @@ end
 
 require "errbit-ng-plugin"
 require "errbit-ng-github-plugin"
-require "active_support/all"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
