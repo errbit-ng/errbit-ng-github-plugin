@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     errbit_github_plugin (0.3.0)
-      errbit_plugin
+      errbit-ng-plugin
       octokit
 
 GEM
@@ -38,7 +38,7 @@ GEM
     diff-lcs (1.5.1)
     docile (1.4.1)
     drb (2.2.1)
-    errbit_plugin (0.6.0)
+    errbit-ng-plugin (0.1.0)
     faraday (2.12.2)
       faraday-net_http (>= 2.0, < 3.5)
       json
