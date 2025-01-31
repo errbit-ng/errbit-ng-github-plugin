@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    errbit-ng-github-plugin (0.3.0)
+    errbit-ng-github-plugin (0.1.0)
       errbit-ng-plugin
       octokit
 
