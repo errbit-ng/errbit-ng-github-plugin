@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe ErrbitGithubPlugin::IssueTracker do
+RSpec.describe ErrbitGithubPlugin::IssueTracker do
   describe '.label' do
     it 'return LABEL' do
       expect(described_class.label).to eq described_class::LABEL
