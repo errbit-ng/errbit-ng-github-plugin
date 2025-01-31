@@ -1,0 +1,44 @@
+name: RSpec on JRuby
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 21 * * 6"
+
+env:
+  CI: "yes"
+  JRUBY_OPTS: "--debug"
+
+jobs:
+  rspec:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ["jruby-9.4"]
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@cb605e52c26070c328afc4562f0b4ada7618a84e # v2.10.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - run: rm -f Gemfile.lock
+      - run: rm -f .ruby-version
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@2654679fe7f7c29875c669398a8ec0791b8a64a1 # v1.215.0
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          rubygems: latest
+          bundler: latest
+          bundler-cache: true
+      - run: bundle exec rspec
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@13ce06bfc6bbe3ecf90edbbf1bc32fe5978ca1d3 # v5.3.1

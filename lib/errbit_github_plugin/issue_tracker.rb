@@ -1,14 +1,15 @@
-require 'octokit'
+# frozen_string_literal: true
+
+require "octokit"
 
 module ErrbitGithubPlugin
   class IssueTracker < ErrbitPlugin::IssueTracker
-
     LABEL = 'github'
 
-    NOTE = 'Please configure your github repository in the <strong>GITHUB ' <<
-           'REPO</strong> field above.<br/> Instead of providing your ' <<
-           'username & password, you can link your Github account to your ' <<
-           'user profile, and allow Errbit to create issues using your ' <<
+    NOTE = 'Please configure your github repository in the <strong>GITHUB ' \
+           'REPO</strong> field above.<br/> Instead of providing your ' \
+           'username & password, you can link your Github account to your ' \
+           'user profile, and allow Errbit to create issues using your ' \
            'OAuth token.'
 
     FIELDS = {
