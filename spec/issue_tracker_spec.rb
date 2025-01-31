@@ -48,6 +48,7 @@ RSpec.describe ErrbitGithubPlugin::IssueTracker do
   describe '#configured?' do
     context 'with errors' do
       let(:options) { { invalid_key: '' } }
+
       it 'return false' do
         expect(tracker.configured?).to eq false
       end
@@ -56,6 +57,7 @@ RSpec.describe ErrbitGithubPlugin::IssueTracker do
       let(:options) do
         { username: 'foo', password: 'bar', github_repo: 'user/repos' }
       end
+
       it 'return true' do
         expect(tracker.configured?).to eq true
       end
@@ -64,6 +66,7 @@ RSpec.describe ErrbitGithubPlugin::IssueTracker do
 
   describe '#url' do
     let(:options) { { github_repo: 'repo' } }
+
     it 'returns issues url' do
       expect(tracker.url).to eq 'https://github.com/repo/issues'
     end
@@ -71,32 +74,41 @@ RSpec.describe ErrbitGithubPlugin::IssueTracker do
 
   describe '#errors' do
     subject { tracker.errors }
+
     context 'without username' do
       let(:options) { { username: '', password: 'bar', github_repo: 'repo' } }
+
       it { is_expected.not_to be_empty }
     end
+
     context 'without password' do
       let(:options) do
         { username: '', password: 'bar', github_repo: 'repo' }
       end
+
       it { is_expected.not_to be_empty }
     end
+
     context 'without github_repo' do
       let(:options) do
         { username: 'foo', password: 'bar', github_repo: '' }
       end
+
       it { is_expected.not_to be_empty }
     end
+
     context 'with completed options' do
       let(:options) do
         { username: 'foo', password: 'bar', github_repo: 'repo' }
       end
+
       it { is_expected.to be_empty }
     end
   end
 
   describe '#repo' do
     let(:options) { { github_repo: 'baz' } }
+
     it 'returns github repo' do
       expect(tracker.repo).to eq 'baz'
     end
@@ -104,17 +116,20 @@ RSpec.describe ErrbitGithubPlugin::IssueTracker do
 
   describe '#create_issue' do
     subject { tracker.create_issue('title', 'body', user: user) }
+
     let(:options) do
       { username: 'foo', password: 'bar', github_repo: 'user/repos' }
     end
+
     let(:fake_github_client) do
       double('Fake GitHub Client').tap do |github_client|
-        github_client.stub(:create_issue).and_return(fake_issue)
+        expect(github_client).to receive(:create_issue).and_return(fake_issue)
       end
     end
+
     let(:fake_issue) do
       double('Fake Issue').tap do |issue|
-        issue.stub(:html_url).and_return('http://github.com/user/repos/issues/878')
+        expect(issue).to receive(:html_url).and_return('http://github.com/user/repos/issues/878').twice
       end
     end
 
@@ -125,20 +140,24 @@ RSpec.describe ErrbitGithubPlugin::IssueTracker do
           'github_oauth_token' => 'valid_token'
         }
       end
+
       it 'return issue url' do
-        Octokit::Client.stub(:new).with(
-          login: user['github_login'], access_token: user['github_oauth_token']
-        ).and_return(fake_github_client)
+        expect(Octokit::Client).to receive(:new)
+          .with(login: user['github_login'], access_token: user['github_oauth_token'])
+          .and_return(fake_github_client)
+
         expect(subject).to eq fake_issue.html_url
       end
     end
 
     context 'signed in with password' do
       let(:user) { {} }
+
       it 'return issue url' do
-        (Octokit::Client).stub(:new).with(
-          login: options['username'], password: options['password']
-        ).and_return(fake_github_client)
+        expect(Octokit::Client).to receive(:new)
+          .with(login: options['username'], password: options['password'])
+          .and_return(fake_github_client)
+
         expect(subject).to eq fake_issue.html_url
       end
     end
@@ -147,10 +166,12 @@ RSpec.describe ErrbitGithubPlugin::IssueTracker do
       let(:user) do
         { 'github_login' => 'alice', 'github_oauth_token' => 'invalid_token' }
       end
+
       it 'raise AuthenticationError' do
-        (Octokit::Client).stub(:new).with(
-          login: user['github_login'], access_token: user['github_oauth_token']
-        ).and_raise(Octokit::Unauthorized)
+        expect(Octokit::Client).to receive(:new)
+          .with(login: user['github_login'], access_token: user['github_oauth_token'])
+          .and_raise(Octokit::Unauthorized)
+
         expect { subject }.to raise_error
       end
     end
